@@ -107,15 +107,15 @@
     <header id="header" class="bg-white/80 backdrop-blur-md shadow-md sticky top-0 z-50">
         <nav class="container mx-auto px-6 py-3 flex justify-between items-center">
              <a href="#" class="logo">
-                <img src="logo.png" alt="Website Logo">
+                <img src="images/logo.png" alt="Website Logo">
             </a>
             <div class="hidden md:flex space-x-6 items-center">
-                <a href="#home" class="text-gray-600 hover:text-green-700 transition duration-300">Home</a>
-                <a href="#safaris" class="text-gray-600 hover:text-green-700 transition duration-300">Safaris</a>
-                <a href="#booking" class="text-gray-600 hover:text-green-700 transition duration-300">Bookings</a>
+                <a href="#hero" class="text-gray-600 hover:text-green-700 transition duration-300">Home</a>
+                <a href="#safaris" class="text-gray-600 hover:text-green-700 transition duration-300">Packages</a>
                 <a href="#gallery" class="text-gray-600 hover:text-green-700 transition duration-300">Gallery</a>
                 <a href="#contact" class="text-gray-600 hover:text-green-700 transition duration-300">Contact</a>
                 <a href="#booking" class="bg-green-600 text-white py-2 px-4 rounded-full hover:bg-green-700 transition duration-300 shadow-md">Book Now</a>
+                <a href="#booking" class="bg-green-600 text-white py-2 px-4 rounded-full hover:bg-yellow-700 transition duration-300 shadow-md">Book Now</a>
             </div>
             <!-- Mobile Menu Button -->
             <button id="mobile-menu-button" class="md:hidden text-gray-600 hover:text-green-700 focus:outline-none">
@@ -124,12 +124,11 @@
         </nav>
         <!-- Mobile Menu -->
         <div id="mobile-menu" class="hidden md:hidden bg-white/90">
-            <a href="#home" class="block py-2 px-6 text-sm text-gray-600 hover:bg-green-50">Home</a>
-            <a href="#safaris" class="block py-2 px-6 text-sm text-gray-600 hover:bg-green-50">Safaris</a>
-            <a href="#booking" class="block py-2 px-6 text-sm text-gray-600 hover:bg-green-50">Bookings</a>
+            <a href="#hero" class="block py-2 px-6 text-sm text-gray-600 hover:bg-green-50">Home</a>
+            <a href="#safaris" class="block py-2 px-6 text-sm text-gray-600 hover:bg-green-50">Packages</a>
             <a href="#gallery" class="block py-2 px-6 text-sm text-gray-600 hover:bg-green-50">Gallery</a>
             <a href="#contact" class="block py-2 px-6 text-sm text-gray-600 hover:bg-green-50">Contact</a>
-             <a href="#booking" class="block py-3 px-6 text-sm bg-green-600 text-white text-center font-bold">Book Now</a>
+            <a href="#booking" class="block py-3 px-6 text-sm bg-green-600 text-white text-center font-bold">Book Now</a>
         </div>
     </header>
 
@@ -138,7 +137,7 @@
   <section id="hero">
     <!-- Video Background -->
     <video class="hero-video" autoplay muted loop playsinline>
-      <source src="background.mp4" type="video/mp4">
+      <source src="videos/hero.mp4" type="video/mp4">
       <source src="safari-background.webm" type="video/webm">
       <!-- Fallback for browsers that don't support video -->
     </video>
@@ -152,7 +151,7 @@
     <div class="hero-content">
       <h1>Welcome to Ceylon Safari</h1>
       <p>Experience the wild beauty of Sri Lanka like never before!</p>
-      <a href="#packages" class="btn">Explore Packages</a>
+      <a href="#safaris" class="btn">Explore Packages</a>
     </div>
   </section>
 
@@ -201,55 +200,10 @@
             </div>
         </section>
 
-        <!-- Booking Section -->
-        <section id="booking" class="py-20 bg-gray-100">
-            <div class="container mx-auto px-6">
-                <h2 class="text-3xl md:text-4xl font-bold text-center mb-12">Manage Your Trip</h2>
-                <div class="max-w-3xl mx-auto bg-white p-8 rounded-xl shadow-lg">
-                    <form id="bookingForm" novalidate>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <!-- Full Name -->
-                            <div>
-                                <label for="fullName" class="block text-gray-700 font-semibold mb-2">Full Name</label>
-                                <input type="text" id="fullName" name="fullName" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500" placeholder="John Doe" required>
-                            </div>
-                            <!-- Email Address -->
-                            <div>
-                                <label for="email" class="block text-gray-700 font-semibold mb-2">Email Address</label>
-                                <input type="email" id="email" name="email" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500" placeholder="john.doe@example.com" required>
-                            </div>
-                            <!-- Select Safari -->
-                            <div>
-                                <label for="safari" class="block text-gray-700 font-semibold mb-2">Choose Your Safari</label>
-                                <select id="safari" name="safari" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500" required>
-                                    <option value="" disabled selected>Select a package</option>
-                                    <option value="yala">Yala Leopard Quest</option>
-                                    <option value="udawalawe">Udawalawe Elephant Gathering</option>
-                                    <option value="sinharaja">Sinharaja Rainforest Trek</option>
-                                </select>
-                            </div>
-                            <!-- Select Date -->
-                            <div>
-                                <label for="date" class="block text-gray-700 font-semibold mb-2">Preferred Date</label>
-                                <input type="date" id="date" name="date" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500" required>
-                            </div>
-                            <!-- Number of People -->
-                            <div class="md:col-span-2">
-                                <label for="people" class="block text-gray-700 font-semibold mb-2">Number of People</label>
-                                <input type="number" id="people" name="people" min="1" max="10" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500" placeholder="e.g., 2" required>
-                            </div>
-                        </div>
-                        <div class="text-center mt-8">
-                            <button type="submit" class="bg-yellow-500 text-gray-900 py-3 px-8 rounded-full text-lg font-semibold hover:bg-yellow-600 transition duration-300 shadow-lg w-full md:w-auto">Submit Booking Request</button>
-                        </div>
-                    </form>
-                    <div id="form-message" class="mt-6 text-center"></div>
-                </div>
-            </div>
-        </section>
+        
 
         <!-- Gallery Section -->
-        <section id="gallery" class="py-20 bg-white">
+        <section id="gallery" class="py-20 bg-gray-100">
             <div class="container mx-auto px-6">
                 <h2 class="text-3xl md:text-4xl font-bold text-center mb-12">Moments from the Wild</h2>
                 <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
@@ -282,7 +236,7 @@
         </section>
 
         <!-- Contact Section -->
-        <section id="contact" class="py-20 bg-gray-100">
+        <section id="contact" class="py-20 bg-white">
             <div class="container mx-auto px-6">
                 <h2 class="text-3xl md:text-4xl font-bold text-center mb-12">Get In Touch</h2>
                 <div class="flex flex-wrap -mx-4">
