@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wild Trails - Safari Trip Management</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts - Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        /* Custom Styles */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc; /* light gray background */
+        }
+        .logo img {
+          height: 50px;
+        }
+
+            /* Hero */
+    #hero {
+      height: 90vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--white);
+      text-align: center;
+      padding: 0 2rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-video {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: -2;
+    }
+
+    .hero-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.4);
+      z-index: -1;
+    }
+
+    .hero-fallback {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 600"><defs><linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:%23228B22;stop-opacity:1" /><stop offset="100%" style="stop-color:%23006400;stop-opacity:1" /></linearGradient></defs><rect width="1200" height="600" fill="url(%23bg)"/><circle cx="200" cy="150" r="30" fill="%23FFD700" opacity="0.8"/><circle cx="400" cy="200" r="25" fill="%23FFA500" opacity="0.6"/><circle cx="800" cy="100" r="35" fill="%23FF8C00" opacity="0.7"/><path d="M0,400 Q300,350 600,400 T1200,400 L1200,600 L0,600 Z" fill="%238FBC8F"/></svg>') no-repeat center center/cover;
+      z-index: -3;
+    }
+
+    .hero-content h1 {
+      color: white;
+      font-size: 4rem;
+      margin-bottom: 1rem;
+      text-shadow: 2px 2px 6px #000;
+      animation: fadeInUp 1s ease-out;
+    }
+
+    .hero-content p {
+      color: white;
+      font-size: 1.7rem;
+      margin-bottom: 1.5rem;
+      text-shadow: 1px 1px 3px #000;
+      animation: fadeInUp 1s ease-out 0.2s both;
+    }
+
+    .btn {
+      background: rgb(224, 204, 19);
+      color: #000;
+      padding: 0.8rem 1.5rem;
+      border: none;
+      font-weight: bold;
+      border-radius: 5px;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      animation: fadeInUp 1s ease-out 0.4s both;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-800">
+
+    <!-- Header & Navigation Bar -->
+    <header id="header" class="bg-white/80 backdrop-blur-md shadow-md sticky top-0 z-50">
+        <nav class="container mx-auto px-6 py-3 flex justify-between items-center">
+             <a href="#" class="logo">
+                <img src="logo.png" alt="Website Logo">
+            </a>
+            <div class="hidden md:flex space-x-6 items-center">
+                <a href="#home" class="text-gray-600 hover:text-green-700 transition duration-300">Home</a>
+                <a href="#safaris" class="text-gray-600 hover:text-green-700 transition duration-300">Safaris</a>
+                <a href="#booking" class="text-gray-600 hover:text-green-700 transition duration-300">Bookings</a>
+                <a href="#gallery" class="text-gray-600 hover:text-green-700 transition duration-300">Gallery</a>
+                <a href="#contact" class="text-gray-600 hover:text-green-700 transition duration-300">Contact</a>
+                <a href="#booking" class="bg-green-600 text-white py-2 px-4 rounded-full hover:bg-green-700 transition duration-300 shadow-md">Book Now</a>
+            </div>
+            <!-- Mobile Menu Button -->
+            <button id="mobile-menu-button" class="md:hidden text-gray-600 hover:text-green-700 focus:outline-none">
+                <i class="fas fa-bars fa-lg"></i>
+            </button>
+        </nav>
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white/90">
+            <a href="#home" class="block py-2 px-6 text-sm text-gray-600 hover:bg-green-50">Home</a>
+            <a href="#safaris" class="block py-2 px-6 text-sm text-gray-600 hover:bg-green-50">Safaris</a>
+            <a href="#booking" class="block py-2 px-6 text-sm text-gray-600 hover:bg-green-50">Bookings</a>
+            <a href="#gallery" class="block py-2 px-6 text-sm text-gray-600 hover:bg-green-50">Gallery</a>
+            <a href="#contact" class="block py-2 px-6 text-sm text-gray-600 hover:bg-green-50">Contact</a>
+             <a href="#booking" class="block py-3 px-6 text-sm bg-green-600 text-white text-center font-bold">Book Now</a>
+        </div>
+    </header>
+
+    <main>
+        <!-- Hero Section -->
+  <section id="hero">
+    <!-- Video Background -->
+    <video class="hero-video" autoplay muted loop playsinline>
+      <source src="background.mp4" type="video/mp4">
+      <source src="safari-background.webm" type="video/webm">
+      <!-- Fallback for browsers that don't support video -->
+    </video>
+    
+    <!-- Overlay for better text readability -->
+    <div class="hero-overlay"></div>
+    
+    <!-- Fallback background (shows if video fails to load) -->
+    <div class="hero-fallback"></div>
+    
+    <div class="hero-content">
+      <h1>Welcome to Ceylon Safari</h1>
+      <p>Experience the wild beauty of Sri Lanka like never before!</p>
+      <a href="#packages" class="btn">Explore Packages</a>
+    </div>
+  </section>
+
+        <!-- Safaris Section -->
+        <section id="safaris" class="py-20 bg-white">
+            <div class="container mx-auto px-6">
+                <h2 class="text-3xl md:text-4xl font-bold text-center mb-12">Our Safari Packages</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- Safari Card 1 -->
+                    <div class="bg-gray-50 rounded-lg shadow-lg overflow-hidden transform hover:-translate-y-2 transition duration-300">
+                        <img src="Yala-National-Park-elephent.png" alt="Yala National Park" class="w-full h-56 object-cover">
+                        <div class="p-6">
+                            <h3 class="text-2xl font-bold mb-2">Yala Leopard Quest</h3>
+                            <p class="text-gray-600 mb-4">Home to the highest density of leopards in the world. An exhilarating experience awaits.</p>
+                            <div class="flex justify-between items-center">
+                                <span class="text-2xl font-bold text-green-600">$120 <span class="text-sm font-normal text-gray-500">/ person</span></span>
+                                <a href="#booking" class="bg-green-600 text-white py-2 px-4 rounded-full hover:bg-green-700 transition duration-300">Book Trip</a>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Safari Card 2 -->
+                    <div class="bg-gray-50 rounded-lg shadow-lg overflow-hidden transform hover:-translate-y-2 transition duration-300">
+                        <img src="01.jpeg" alt="Udawalawe National Park" class="w-full h-56 object-cover">
+                        <div class="p-6">
+                            <h3 class="text-2xl font-bold mb-2">Udawalawe Elephant Gathering</h3>
+                            <p class="text-gray-600 mb-4">Witness majestic herds of Sri Lankan elephants in their natural, protected habitat.</p>
+                             <div class="flex justify-between items-center">
+                                <span class="text-2xl font-bold text-green-600">$95 <span class="text-sm font-normal text-gray-500">/ person</span></span>
+                                <a href="#booking" class="bg-green-600 text-white py-2 px-4 rounded-full hover:bg-green-700 transition duration-300">Book Trip</a>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Safari Card 3 -->
+                    <div class="bg-gray-50 rounded-lg shadow-lg overflow-hidden transform hover:-translate-y-2 transition duration-300">
+                        <img src="WhatsApp Image 2025-07-27 at 9.50.02 AM.jpeg" alt="Sinharaja Forest Reserve" class="w-full h-56 object-cover">
+                        <div class="p-6">
+                            <h3 class="text-2xl font-bold mb-2">Sinharaja Rainforest Trek</h3>
+                            <p class="text-gray-600 mb-4">Explore a UNESCO World Heritage site, a biodiversity hotspot rich in endemic species.</p>
+                             <div class="flex justify-between items-center">
+                                <span class="text-2xl font-bold text-green-600">$80 <span class="text-sm font-normal text-gray-500">/ person</span></span>
+                                <a href="#booking" class="bg-green-600 text-white py-2 px-4 rounded-full hover:bg-green-700 transition duration-300">Book Trip</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Booking Section -->
+        <section id="booking" class="py-20 bg-gray-100">
+            <div class="container mx-auto px-6">
+                <h2 class="text-3xl md:text-4xl font-bold text-center mb-12">Manage Your Trip</h2>
+                <div class="max-w-3xl mx-auto bg-white p-8 rounded-xl shadow-lg">
+                    <form id="bookingForm" novalidate>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <!-- Full Name -->
+                            <div>
+                                <label for="fullName" class="block text-gray-700 font-semibold mb-2">Full Name</label>
+                                <input type="text" id="fullName" name="fullName" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500" placeholder="John Doe" required>
+                            </div>
+                            <!-- Email Address -->
+                            <div>
+                                <label for="email" class="block text-gray-700 font-semibold mb-2">Email Address</label>
+                                <input type="email" id="email" name="email" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500" placeholder="john.doe@example.com" required>
+                            </div>
+                            <!-- Select Safari -->
+                            <div>
+                                <label for="safari" class="block text-gray-700 font-semibold mb-2">Choose Your Safari</label>
+                                <select id="safari" name="safari" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500" required>
+                                    <option value="" disabled selected>Select a package</option>
+                                    <option value="yala">Yala Leopard Quest</option>
+                                    <option value="udawalawe">Udawalawe Elephant Gathering</option>
+                                    <option value="sinharaja">Sinharaja Rainforest Trek</option>
+                                </select>
+                            </div>
+                            <!-- Select Date -->
+                            <div>
+                                <label for="date" class="block text-gray-700 font-semibold mb-2">Preferred Date</label>
+                                <input type="date" id="date" name="date" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500" required>
+                            </div>
+                            <!-- Number of People -->
+                            <div class="md:col-span-2">
+                                <label for="people" class="block text-gray-700 font-semibold mb-2">Number of People</label>
+                                <input type="number" id="people" name="people" min="1" max="10" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500" placeholder="e.g., 2" required>
+                            </div>
+                        </div>
+                        <div class="text-center mt-8">
+                            <button type="submit" class="bg-yellow-500 text-gray-900 py-3 px-8 rounded-full text-lg font-semibold hover:bg-yellow-600 transition duration-300 shadow-lg w-full md:w-auto">Submit Booking Request</button>
+                        </div>
+                    </form>
+                    <div id="form-message" class="mt-6 text-center"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Gallery Section -->
+        <section id="gallery" class="py-20 bg-white">
+            <div class="container mx-auto px-6">
+                <h2 class="text-3xl md:text-4xl font-bold text-center mb-12">Moments from the Wild</h2>
+                <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                    <div class="overflow-hidden rounded-lg shadow-md h-64">
+                        <img src="view-wild-lion-its-natural-habitat.jpg" alt="Wildlife photo 1" class="w-full h-full object-cover transform hover:scale-110 transition duration-500">
+                    </div>
+                    <div class="overflow-hidden rounded-lg shadow-md h-64">
+                        <img src="https://placehold.co/500x500/34495e/ffffff?text=Monkey" alt="Wildlife photo 2" class="w-full h-full object-cover transform hover:scale-110 transition duration-500">
+                    </div>
+                     <div class="overflow-hidden rounded-lg shadow-md h-64 col-span-2 md:col-span-1">
+                        <img src="https://placehold.co/500x500/1abc9c/ffffff?text=Spotted+Deer" alt="Wildlife photo 3" class="w-full h-full object-cover transform hover:scale-110 transition duration-500">
+                    </div>
+                    <div class="overflow-hidden rounded-lg shadow-md h-64">
+                        <img src="https://placehold.co/500x500/f1c40f/ffffff?text=Eagle" alt="Wildlife photo 4" class="w-full h-full object-cover transform hover:scale-110 transition duration-500">
+                    </div>
+                    <div class="overflow-hidden rounded-lg shadow-md h-64">
+                        <img src="https://placehold.co/500x500/e67e22/ffffff?text=Sloth+Bear" alt="Wildlife photo 5" class="w-full h-full object-cover transform hover:scale-110 transition duration-500">
+                    </div>
+                     <div class="overflow-hidden rounded-lg shadow-md h-64">
+                        <img src="https://placehold.co/500x500/e74c3c/ffffff?text=Crocodile" alt="Wildlife photo 6" class="w-full h-full object-cover transform hover:scale-110 transition duration-500">
+                    </div>
+                    <div class="overflow-hidden rounded-lg shadow-md h-64">
+                        <img src="https://placehold.co/500x500/8e44ad/ffffff?text=Kingfisher" alt="Wildlife photo 7" class="w-full h-full object-cover transform hover:scale-110 transition duration-500">
+                    </div>
+                     <div class="overflow-hidden rounded-lg shadow-md h-64">
+                        <img src="https://placehold.co/500x500/2980b9/ffffff?text=Wild+Boar" alt="Wildlife photo 8" class="w-full h-full object-cover transform hover:scale-110 transition duration-500">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact" class="py-20 bg-gray-100">
+            <div class="container mx-auto px-6">
+                <h2 class="text-3xl md:text-4xl font-bold text-center mb-12">Get In Touch</h2>
+                <div class="flex flex-wrap -mx-4">
+                    <!-- Contact Info -->
+                    <div class="w-full lg:w-1/2 px-4 mb-8 lg:mb-0">
+                        <div class="bg-white p-8 rounded-xl shadow-lg h-full">
+                            <h3 class="text-2xl font-bold mb-4">Contact Information</h3>
+                            <p class="text-gray-600 mb-6">Have questions? We'd love to hear from you. Reach out to us and we'll get back to you shortly.</p>
+                            <div class="space-y-4">
+                                <p class="flex items-center"><i class="fas fa-map-marker-alt text-green-600 w-6 mr-2"></i> No. 123, Safari Lane, Matara, Sri Lanka</p>
+                                <p class="flex items-center"><i class="fas fa-phone text-green-600 w-6 mr-2"></i> +94 11 234 5678</p>
+                                <p class="flex items-center"><i class="fas fa-envelope text-green-600 w-6 mr-2"></i> info@wildtrails.lk</p>
+                            </div>
+                             <div class="mt-8">
+                                <h4 class="font-bold mb-2">Follow Us</h4>
+                                <div class="flex space-x-4">
+                                    <a href="#" class="text-gray-500 hover:text-green-700"><i class="fab fa-facebook fa-2x"></i></a>
+                                    <a href="#" class="text-gray-500 hover:text-green-700"><i class="fab fa-instagram fa-2x"></i></a>
+                                    <a href="#" class="text-gray-500 hover:text-green-700"><i class="fab fa-twitter fa-2x"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                     <!-- Map -->
+                    <div class="w-full lg:w-1/2 px-4">
+                         <div class="bg-white p-2 rounded-xl shadow-lg h-full">
+                            <iframe 
+                                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d63495.7363198592!2d80.5055006409893!3d5.951508670879857!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ae138d151c06921%3A0x33b5a88135832f83!2sMatara!5e0!3m2!1sen!2slk!4v1721992928172!5m2!1sen!2slk" 
+                                width="100%" 
+                                height="100%" 
+                                style="border:0;" 
+                                allowfullscreen="" 
+                                loading="lazy" 
+                                referrerpolicy="no-referrer-when-downgrade"
+                                class="rounded-lg min-h-[400px]">
+                            </iframe>
+                         </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-8">
+        <div class="container mx-auto px-6 text-center">
+            <p>&copy; 2025 WildTrails Safari Management. All Rights Reserved.</p>
+            <p class="text-sm text-gray-400 mt-2">Designed with <i class="fas fa-heart text-red-500"></i> for Adventure Lovers</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Mobile menu toggle
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            mobileMenuButton.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+
+            // Close mobile menu when a link is clicked
+            const mobileMenuLinks = mobileMenu.getElementsByTagName('a');
+            for (let link of mobileMenuLinks) {
+                link.addEventListener('click', () => {
+                     mobileMenu.classList.add('hidden');
+                });
+            }
+
+            // Booking Form Submission
+            const bookingForm = document.getElementById('bookingForm');
+            const formMessage = document.getElementById('form-message');
+
+            // Set min date for date picker to today
+            const datePicker = document.getElementById('date');
+            const today = new Date().toISOString().split('T')[0];
+            datePicker.setAttribute('min', today);
+
+            bookingForm.addEventListener('submit', function (e) {
+                e.preventDefault();
+                
+                // Simple validation
+                let isValid = true;
+                const requiredFields = bookingForm.querySelectorAll('[required]');
+                requiredFields.forEach(field => {
+                    if (!field.value.trim()) {
+                        isValid = false;
+                        field.classList.add('border-red-500');
+                        field.classList.remove('focus:ring-green-500');
+                    } else {
+                        field.classList.remove('border-red-500');
+                         field.classList.add('focus:ring-green-500');
+                    }
+                });
+
+                if (isValid) {
+                    formMessage.innerHTML = `<p class="text-green-600 font-semibold">Thank you! Your booking request for the "${bookingForm.safari.options[bookingForm.safari.selectedIndex].text}" has been sent. We will contact you shortly via email.</p>`;
+                    bookingForm.reset();
+                } else {
+                     formMessage.innerHTML = `<p class="text-red-500 font-semibold">Please fill out all the required fields.</p>`;
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>
