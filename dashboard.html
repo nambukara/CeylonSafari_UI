@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ceylon Safari - User Dashboard</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts - Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc;
+        }
+        .sidebar-transition {
+            transition: transform 0.3s ease-in-out;
+        }
+        .content-shift {
+            transition: margin-left 0.3s ease-in-out;
+        }
+        .gradient-bg {
+            background: linear-gradient(135deg, #16a34a 0%, #15803d 100%);
+        }
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        .card-hover:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+        .notification-dot {
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .fade-in-up {
+            animation: fadeInUp 0.6s ease-out forwards;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Top Navigation Bar -->
+    <nav class="bg-white shadow-lg fixed w-full top-0 z-50 border-b border-gray-200">
+        <div class="px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <!-- Left side -->
+                <div class="flex items-center space-x-4">
+                    <!-- Sidebar toggle button -->
+                    <button id="sidebar-toggle" class="text-gray-600 hover:text-green-600 p-2 rounded-lg hover:bg-gray-100 transition-colors">
+                        <i class="fas fa-bars text-lg"></i>
+                    </button>
+                    
+                    <!-- Logo -->
+                    <div class="flex items-center space-x-3">
+                        <div class="w-8 h-8 bg-green-600 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-paw text-white"></i>
+                        </div>
+                        <span class="font-bold text-xl text-gray-900">Ceylon Safari</span>
+                    </div>
+                </div>
+
+                <!-- Right side -->
+                <div class="flex items-center space-x-4">
+                    <!-- Search -->
+                    <div class="hidden md:block">
+                        <div class="relative">
+                            <input type="text" placeholder="Search..." class="bg-gray-100 border-0 rounded-lg py-2 pl-10 pr-4 text-sm focus:ring-2 focus:ring-green-500 focus:bg-white transition-all">
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center">
+                                <i class="fas fa-search text-gray-400"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Notifications -->
+                    <div class="relative">
+                        <button class="p-2 text-gray-600 hover:text-green-600 hover:bg-gray-100 rounded-lg transition-colors relative">
+                            <i class="fas fa-bell text-lg"></i>
+                            <span class="absolute -top-1 -right-1 h-3 w-3 bg-red-500 rounded-full notification-dot"></span>
+                        </button>
+                    </div>
+
+                    <!-- User Profile Dropdown -->
+                    <div class="relative">
+                        <button id="profile-dropdown" class="flex items-center space-x-2 p-2 rounded-lg hover:bg-gray-100 transition-colors">
+                            <img src="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='50' fill='%2316a34a'/><circle cx='50' cy='35' r='15' fill='white'/><path d='M25 75 Q25 60 50 60 Q75 60 75 75' fill='white'/></svg>" alt="Profile" class="w-8 h-8 rounded-full">
+                            <span class="hidden md:block text-sm font-medium text-gray-700">John Doe</span>
+                            <i class="fas fa-chevron-down text-xs text-gray-500"></i>
+                        </button>
+                        
+                        <!-- Dropdown Menu -->
+                        <div id="profile-menu" class="hidden absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 py-2 z-50">
+                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"><i class="fas fa-user mr-2"></i>Profile</a>
+                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"><i class="fas fa-cog mr-2"></i>Settings</a>
+                            <hr class="my-2">
+                            <a href="#" class="block px-4 py-2 text-sm text-red-600 hover:bg-gray-100"><i class="fas fa-sign-out-alt mr-2"></i>Logout</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Sidebar -->
+    <aside id="sidebar" class="fixed left-0 top-16 w-64 h-full bg-white shadow-lg border-r border-gray-200 sidebar-transition z-40">
+        <div class="p-6">
+            <!-- User Info -->
+            <div class="flex items-center space-x-3 mb-8 p-4 bg-gradient-to-r from-green-50 to-green-100 rounded-xl">
+                <img src="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='50' fill='%2316a34a'/><circle cx='50' cy='35' r='15' fill='white'/><path d='M25 75 Q25 60 50 60 Q75 60 75 75' fill='white'/></svg>" alt="Profile" class="w-12 h-12 rounded-full">
+                <div>
+                    <h3 class="font-semibold text-gray-900">John Doe</h3>
+                    <p class="text-sm text-gray-600">Premium Member</p>
+                </div>
+            </div>
+
+            <!-- Navigation Menu -->
+            <nav class="space-y-2">
+                <a href="#" onclick="showSection('dashboard')" class="nav-item flex items-center space-x-3 px-4 py-3 text-gray-700 rounded-lg hover:bg-green-50 hover:text-green-700 transition-colors group active">
+                    <i class="fas fa-tachometer-alt w-5"></i>
+                    <span>Dashboard</span>
+                </a>
+                
+                <a href="#" onclick="showSection('bookings')" class="nav-item flex items-center space-x-3 px-4 py-3 text-gray-700 rounded-lg hover:bg-green-50 hover:text-green-700 transition-colors group">
+                    <i class="fas fa-calendar-check w-5"></i>
+                    <span>My Bookings</span>
+                    <span class="ml-auto bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full">3</span>
+                </a>
+                
+                <a href="#" onclick="showSection('packages')" class="nav-item flex items-center space-x-3 px-4 py-3 text-gray-700 rounded-lg hover:bg-green-50 hover:text-green-700 transition-colors group">
+                    <i class="fas fa-map-marked-alt w-5"></i>
+                    <span>Safari Packages</span>
+                </a>
+                
+                <a href="#" onclick="showSection('gallery')" class="nav-item flex items-center space-x-3 px-4 py-3 text-gray-700 rounded-lg hover:bg-green-50 hover:text-green-700 transition-colors group">
+                    <i class="fas fa-images w-5"></i>
+                    <span>My Gallery</span>
+                </a>
+                
+                <a href="#" onclick="showSection('profile')" class="nav-item flex items-center space-x-3 px-4 py-3 text-gray-700 rounded-lg hover:bg-green-50 hover:text-green-700 transition-colors group">
+                    <i class="fas fa-user-circle w-5"></i>
+                    <span>Profile</span>
+                </a>
+                
+                <a href="#" onclick="showSection('payments')" class="nav-item flex items-center space-x-3 px-4 py-3 text-gray-700 rounded-lg hover:bg-green-50 hover:text-green-700 transition-colors group">
+                    <i class="fas fa-credit-card w-5"></i>
+                    <span>Payments</span>
+                </a>
+                
+                <a href="#" onclick="showSection('support')" class="nav-item flex items-center space-x-3 px-4 py-3 text-gray-700 rounded-lg hover:bg-green-50 hover:text-green-700 transition-colors group">
+                    <i class="fas fa-headset w-5"></i>
+                    <span>Support</span>
+                </a>
+            </nav>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main id="main-content" class="ml-64 pt-16 content-shift min-h-screen">
+        <div class="p-6">
+            <!-- Dashboard Section -->
+            <div id="dashboard-section" class="content-section">
+                <!-- Header -->
+                <div class="mb-8 fade-in-up">
+                    <h1 class="text-3xl font-bold text-gray-900 mb-2">Welcome back, John! 🦁</h1>
+                    <p class="text-gray-600">Here's what's happening with your safari adventures</p>
+                </div>
+
+                <!-- Stats Cards -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8 fade-in-up">
+                    <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200 card-hover">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-sm text-gray-600">Total Bookings</p>
+                                <p class="text-2xl font-bold text-gray-900">12</p>
+                            </div>
+                            <div class="bg-blue-100 p-3 rounded-lg">
+                                <i class="fas fa-calendar-check text-blue-600"></i>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200 card-hover">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-sm text-gray-600">Upcoming Trips</p>
+                                <p class="text-2xl font-bold text-gray-900">3</p>
+                            </div>
+                            <div class="bg-green-100 p-3 rounded-lg">
+                                <i class="fas fa-plane-departure text-green-600"></i>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200 card-hover">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-sm text-gray-600">Wildlife Spotted</p>
+                                <p class="text-2xl font-bold text-gray-900">45</p>
+                            </div>
+                            <div class="bg-yellow-100 p-3 rounded-lg">
+                                <i class="fas fa-paw text-yellow-600"></i>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200 card-hover">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-sm text-gray-600">Loyalty Points</p>
+                                <p class="text-2xl font-bold text-gray-900">2,450</p>
+                            </div>
+                            <div class="bg-purple-100 p-3 rounded-lg">
+                                <i class="fas fa-star text-purple-600"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Activity & Upcoming Bookings -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 fade-in-up">
+                    <!-- Upcoming Bookings -->
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                        <h3 class="text-lg font-semibold text-gray-900 mb-4">Upcoming Bookings</h3>
+                        <div class="space-y-4">
+                            <div class="flex items-center space-x-4 p-4 bg-green-50 rounded-lg">
+                                <div class="w-12 h-12 bg-green-600 rounded-lg flex items-center justify-center">
+                                    <i class="fas fa-tree text-white"></i>
+                                </div>
+                                <div class="flex-1">
+                                    <h4 class="font-medium text-gray-900">Yala National Park</h4>
+                                    <p class="text-sm text-gray-600">Half Day Safari - Tomorrow 5:00 AM</p>
+                                </div>
+                                <div class="text-right">
+                                    <p class="text-sm font-medium text-green-600">$120</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-center space-x-4 p-4 bg-gray-50 rounded-lg">
+                                <div class="w-12 h-12 bg-gray-600 rounded-lg flex items-center justify-center">
+                                    <i class="fas fa-mountain text-white"></i>
+                                </div>
+                                <div class="flex-1">
+                                    <h4 class="font-medium text-gray-900">Kumana National Park</h4>
+                                    <p class="text-sm text-gray-600">2 Day Safari - Next Week</p>
+                                </div>
+                                <div class="text-right">
+                                    <p class="text-sm font-medium text-gray-600">$160</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Recent Activity -->
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                        <h3 class="text-lg font-semibold text-gray-900 mb-4">Recent Activity</h3>
+                        <div class="space-y-4">
+                            <div class="flex items-start space-x-3">
+                                <div class="w-2 h-2 bg-green-500 rounded-full mt-2"></div>
+                                <div>
+                                    <p class="text-sm text-gray-900">Booking confirmed for Yala National Park</p>
+                                    <p class="text-xs text-gray-500">2 hours ago</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start space-x-3">
+                                <div class="w-2 h-2 bg-blue-500 rounded-full mt-2"></div>
+                                <div>
+                                    <p class="text-sm text-gray-900">Payment processed for Kumana Safari</p>
+                                    <p class="text-xs text-gray-500">1 day ago</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start space-x-3">
+                                <div class="w-2 h-2 bg-yellow-500 rounded-full mt-2"></div>
+                                <div>
+                                    <p class="text-sm text-gray-900">New photos uploaded to gallery</p>
+                                    <p class="text-xs text-gray-500">3 days ago</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Other sections (hidden by default) -->
+            <div id="bookings-section" class="content-section hidden">
+                <h2 class="text-2xl font-bold text-gray-900 mb-6">My Bookings</h2>
+                <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                    <p class="text-gray-600">Your booking history and upcoming trips will be displayed here.</p>
+                </div>
+            </div>
+
+            <div id="packages-section" class="content-section hidden">
+                <h2 class="text-2xl font-bold text-gray-900 mb-6">Safari Packages</h2>
+                <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                    <p class="text-gray-600">Browse and book new safari packages here.</p>
+                </div>
+            </div>
+
+            <div id="gallery-section" class="content-section hidden">
+                <h2 class="text-2xl font-bold text-gray-900 mb-6">My Gallery</h2>
+                <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                    <p class="text-gray-600">Your safari photos and memories will be displayed here.</p>
+                </div>
+            </div>
+
+            <div id="profile-section" class="content-section hidden">
+                <h2 class="text-2xl font-bold text-gray-900 mb-6">Profile Settings</h2>
+                <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                    <p class="text-gray-600">Manage your account settings and personal information here.</p>
+                </div>
+            </div>
+
+            <div id="payments-section" class="content-section hidden">
+                <h2 class="text-2xl font-bold text-gray-900 mb-6">Payment History</h2>
+                <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                    <p class="text-gray-600">View your payment history and manage payment methods here.</p>
+                </div>
+            </div>
+
+            <div id="support-section" class="content-section hidden">
+                <h2 class="text-2xl font-bold text-gray-900 mb-6">Support Center</h2>
+                <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                    <p class="text-gray-600">Get help and contact our support team here.</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Sidebar toggle functionality
+        const sidebarToggle = document.getElementById('sidebar-toggle');
+        const sidebar = document.getElementById('sidebar');
+        const mainContent = document.getElementById('main-content');
+
+        sidebarToggle.addEventListener('click', () => {
+            sidebar.classList.toggle('-translate-x-full');
+            if (sidebar.classList.contains('-translate-x-full')) {
+                mainContent.classList.remove('ml-64');
+                mainContent.classList.add('ml-0');
+            } else {
+                mainContent.classList.remove('ml-0');
+                mainContent.classList.add('ml-64');
+            }
+        });
+
+        // Profile dropdown toggle
+        const profileDropdown = document.getElementById('profile-dropdown');
+        const profileMenu = document.getElementById('profile-menu');
+
+        profileDropdown.addEventListener('click', (e) => {
+            e.stopPropagation();
+            profileMenu.classList.toggle('hidden');
+        });
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', () => {
+            profileMenu.classList.add('hidden');
+        });
+
+        // Section navigation
+        function showSection(sectionName) {
+            // Hide all sections
+            const sections = document.querySelectorAll('.content-section');
+            sections.forEach(section => {
+                section.classList.add('hidden');
+            });
+
+            // Show selected section
+            const targetSection = document.getElementById(sectionName + '-section');
+            if (targetSection) {
+                targetSection.classList.remove('hidden');
+            }
+
+            // Update active nav item
+            const navItems = document.querySelectorAll('.nav-item');
+            navItems.forEach(item => {
+                item.classList.remove('active', 'bg-green-50', 'text-green-700');
+            });
+            
+            event.target.closest('.nav-item').classList.add('active', 'bg-green-50', 'text-green-700');
+        }
+
+        // Initialize active state
+        document.addEventListener('DOMContentLoaded', () => {
+            const firstNavItem = document.querySelector('.nav-item');
+            firstNavItem.classList.add('bg-green-50', 'text-green-700');
+        });
+
+        // Responsive sidebar for mobile
+        function handleResize() {
+            if (window.innerWidth < 768) {
+                sidebar.classList.add('-translate-x-full');
+                mainContent.classList.remove('ml-64');
+                mainContent.classList.add('ml-0');
+            } else {
+                sidebar.classList.remove('-translate-x-full');
+                mainContent.classList.remove('ml-0');
+                mainContent.classList.add('ml-64');
+            }
+        }
+
+        window.addEventListener('resize', handleResize);
+        handleResize(); // Call on initial load
+    </script>
+</body>
+</html>
