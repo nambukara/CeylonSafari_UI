@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Ceylon Safari</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts - Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc;
+        }
+        .sidebar-transition {
+            transition: transform 0.3s ease-in-out;
+        }
+        .content-shift {
+            transition: margin-left 0.3s ease-in-out;
+        }
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        .card-hover:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        }
+        .notification-dot {
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .fade-in-up {
+            animation: fadeInUp 0.6s ease-out forwards;
+        }
+        .active-nav {
+            background-color: #fef3c7;
+            color: #d97706;
+            border-right: 3px solid #f59e0b;
+        }
+        .status-online { color: #10b981; }
+        .status-offline { color: #ef4444; }
+        .status-busy { color: #f59e0b; }
+        .chart-container {
+            position: relative;
+            height: 300px;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Top Navigation Bar -->
+    <nav class="bg-white shadow-lg fixed w-full top-0 z-50 border-b border-gray-200">
+        <div class="px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <!-- Left side -->
+                <div class="flex items-center space-x-4">
+                    <!-- Sidebar toggle button -->
+                    <button id="sidebar-toggle" class="text-gray-600 hover:text-amber-600 p-2 rounded-lg hover:bg-gray-100 transition-colors">
+                        <i class="fas fa-bars text-lg"></i>
+                    </button>
+                    
+                    <!-- Logo -->
+                    <div class="flex items-center space-x-3">
+                        <div class="w-8 h-8 bg-amber-600 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-crown text-white"></i>
+                        </div>
+                        <span class="font-bold text-xl text-gray-900">Ceylon Safari Admin</span>
+                    </div>
+                </div>
+
+                <!-- Center - Quick Stats -->
+                <div class="hidden lg:flex items-center space-x-6 text-sm">
+                    <div class="flex items-center space-x-2">
+                        <div class="w-3 h-3 bg-green-500 rounded-full status-online"></div>
+                        <span class="text-gray-600">System Online</span>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <i class="fas fa-users text-blue-500"></i>
+                        <span class="text-gray-600">142 Active Bookings</span>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <i class="fas fa-dollar-sign text-green-500"></i>
+                        <span class="text-gray-600">$12,450 Today</span>
+                    </div>
+                </div>
+
+                <!-- Right side -->
+                <div class="flex items-center space-x-4">
+                    <!-- Quick Actions -->
+                    <div class="hidden md:flex items-center space-x-2">
+                        <button class="p-2 text-gray-600 hover:text-amber-600 hover:bg-gray-100 rounded-lg transition-colors" title="Add New Booking">
+                            <i class="fas fa-plus text-lg"></i>
+                        </button>
+                        <button class="p-2 text-gray-600 hover:text-amber-600 hover:bg-gray-100 rounded-lg transition-colors" title="Reports">
+                            <i class="fas fa-chart-bar text-lg"></i>
+                        </button>
+                    </div>
+
+                    <!-- Notifications -->
+                    <div class="relative">
+                        <button class="p-2 text-gray-600 hover:text-amber-600 hover:bg-gray-100 rounded-lg transition-colors relative">
+                            <i class="fas fa-bell text-lg"></i>
+                            <span class="absolute -top-1 -right-1 h-3 w-3 bg-red-500 rounded-full notification-dot"></span>
+                        </button>
+                    </div>
+
+                    <!-- Admin Profile Dropdown -->
+                    <div class="relative">
+                        <button id="profile-dropdown" class="flex items-center space-x-2 p-2 rounded-lg hover:bg-gray-100 transition-colors">
+                            <img src="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='50' fill='%23f59e0b'/><circle cx='50' cy='35' r='15' fill='white'/><path d='M25 75 Q25 60 50 60 Q75 60 75 75' fill='white'/></svg>" alt="Admin" class="w-8 h-8 rounded-full">
+                            <span class="hidden md:block text-sm font-medium text-gray-700">Admin User</span>
+                            <span class="hidden md:block text-xs bg-amber-100 text-amber-800 px-2 py-1 rounded-full">Super Admin</span>
+                            <i class="fas fa-chevron-down text-xs text-gray-500"></i>
+                        </button>
+                        
+                        <!-- Dropdown Menu -->
+                        <div id="profile-menu" class="hidden absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 py-2 z-50">
+                            <a href="admin-profile.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"><i class="fas fa-user-shield mr-2"></i>Admin Profile</a>
+                            <a href="system-settings.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"><i class="fas fa-cogs mr-2"></i>System Settings</a>
+                            <a href="audit-logs.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"><i class="fas fa-history mr-2"></i>Audit Logs</a>
+                            <hr class="my-2">
+                            <a href="index.html" class="block px-4 py-2 text-sm text-red-600 hover:bg-gray-100"><i class="fas fa-sign-out-alt mr-2"></i>Logout</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Sidebar -->
+    <aside id="sidebar" class="fixed left-0 top-16 w-64 h-full bg-white shadow-lg border-r border-gray-200 sidebar-transition z-40 overflow-y-auto">
+        <div class="p-6">
+            <!-- Admin Info -->
+            <div class="flex items-center space-x-3 mb-8 p-4 bg-gradient-to-r from-amber-50 to-orange-100 rounded-xl">
+                <img src="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='50' fill='%23f59e0b'/><circle cx='50' cy='35' r='15' fill='white'/><path d='M25 75 Q25 60 50 60 Q75 60 75 75' fill='white'/></svg>" alt="Admin" class="w-12 h-12 rounded-full">
+                <div>
+                    <h3 class="font-semibold text-gray-900">Admin Panel</h3>
+                    <p class="text-sm text-gray-600">Super Administrator</p>
+                </div>
+            </div>
+
+            <!-- Navigation Menu -->
+            <nav class="space-y-2">
+                <!-- Dashboard -->
+                <a href="admin-dashboard.html" class="flex items-center space-x-3 px-4 py-3 text-gray-700 rounded-lg hover:bg-amber-50 hover:text-amber-700 transition-colors group active-nav">
+                    <i class="fas fa-tachometer-alt w-5"></i>
+                    <span>Dashboard</span>
+                </a>
+
+                <!-- Bookings Management -->
+                <div class="space-y-1">
+                    <p class="text-xs font-semibold text-gray-400 uppercase tracking-wider px-4 py-2">Bookings</p>
+                    <a href="admin-bookings.html" class="flex items-center space-x-3 px-4 py-3 text-gray-700 rounded-lg hover:bg-amber-50 hover:text-amber-700 transition-colors group">
+                        <i class="fas fa-calendar-alt w-5"></i>
+                        <span>All Bookings</span>
+                        <span class="ml-auto bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full">142</span>
+                    </a>
+                    <a href="pending-bookings.html" class="flex items-center space-x-3 px-4 py-3 text-gray-700 rounded-lg hover:bg-amber-50 hover:text-amber-700 transition-colors group">
+                        <i class="fas fa-clock w-5"></i>
+                        <span>Pending Approval</span>
+                        <span class="ml-auto bg-yellow-100 text-yellow-800 text-xs px-2 py-1 rounded-full">8</span>
+                    </a>
+                </div>
+
+                <!-- Customer Management -->
+                <div class="space-y-1">
+                    <p class="text-xs font-semibold text-gray-400 uppercase tracking-wider px-4 py-2">Customers</p>
+                    <a href="customers.html" class="flex items-center space-x-3 px-4 py-3 text-gray-700 rounded-lg hover:bg-amber-50 hover:text-amber-700 transition-colors group">
+                        <i class="fas fa-users w-5"></i>
+                        <span>All Customers</span>
+                    </a>
+                    <a href="customer-reviews.html" class="flex items-center space-x-3 px-4 py-3 text-gray-700 rounded-lg hover:bg-amber-50 hover:text-amber-700 transition-colors group">
+                        <i class="fas fa-star w-5"></i>
+                        <span>Reviews & Ratings</span>
+                    </a>
+                </div>
+
+                <!-- Safari Management -->
+                <div class="space-y-1">
+                    <p class="text-xs font-semibold text-gray-400 uppercase tracking-wider px-4 py-2">Safari Operations</p>
+                    <a href="safari-packages.html" class="flex items-center space-x-3 px-4 py-3 text-gray-700 rounded-lg hover:bg-amber-50 hover:text-amber-700 transition-colors group">
+                        <i class="fas fa-map-marked-alt w-5"></i>
+                        <span>Safari Packages</span>
+                    </a>
+                    <a href="guides.html" class="flex items-center space-x-3 px-4 py-3 text-gray-700 rounded-lg hover:bg-amber-50 hover:text-amber-700 transition-colors group">
+                        <i class="fas fa-user-tie w-5"></i>
+                        <span>Tour Guides</span>
+                    </a>
+                    <a href="vehicles.html" class="flex items-center space-x-3 px-4 py-3 text-gray-700 rounded-lg hover:bg-amber-50 hover:text-amber-700 transition-colors group">
+                        <i class="fas fa-truck w-5"></i>
+                        <span>Vehicles</span>
+                    </a>
+                </div>
+
+                <!-- Financial -->
+                <div class="space-y-1">
+                    <p class="text-xs font-semibold text-gray-400 uppercase tracking-wider px-4 py-2">Financial</p>
+                    <a href="payments.html" class="flex items-center space-x-3 px-4 py-3 text-gray-700 rounded-lg hover:bg-amber-50 hover:text-amber-700 transition-colors group">
+                        <i class="fas fa-credit-card w-5"></i>
+                        <span>Payments</span>
+                    </a>
+                    <a href="reports.html" class="flex items-center space-x-3 px-4 py-3 text-gray-700 rounded-lg hover:bg-amber-50 hover:text-amber-700 transition-colors group">
+                        <i class="fas fa-chart-line w-5"></i>
+                        <span>Financial Reports</span>
+                    </a>
+                </div>
+
+                <!-- Content Management -->
+                <div class="space-y-1">
+                    <p class="text-xs font-semibold text-gray-400 uppercase tracking-wider px-4 py-2">Content</p>
+                    <a href="gallery-manage.html" class="flex items-center space-x-3 px-4 py-3 text-gray-700 rounded-lg hover:bg-amber-50 hover:text-amber-700 transition-colors group">
+                        <i class="fas fa-images w-5"></i>
+                        <span>Gallery Management</span>
+                    </a>
+                    <a href="website-content.html" class="flex items-center space-x-3 px-4 py-3 text-gray-700 rounded-lg hover:bg-amber-50 hover:text-amber-700 transition-colors group">
+                        <i class="fas fa-edit w-5"></i>
+                        <span>Website Content</span>
+                    </a>
+                </div>
+
+                <!-- System -->
+                <div class="space-y-1">
+                    <p class="text-xs font-semibold text-gray-400 uppercase tracking-wider px-4 py-2">System</p>
+                    <a href="admin-users.html" class="flex items-center space-x-3 px-4 py-3 text-gray-700 rounded-lg hover:bg-amber-50 hover:text-amber-700 transition-colors group">
+                        <i class="fas fa-user-shield w-5"></i>
+                        <span>Admin Users</span>
+                    </a>
+                    <a href="system-logs.html" class="flex items-center space-x-3 px-4 py-3 text-gray-700 rounded-lg hover:bg-amber-50 hover:text-amber-700 transition-colors group">
+                        <i class="fas fa-list-alt w-5"></i>
+                        <span>System Logs</span>
+                    </a>
+                </div>
+
+                <!-- Divider -->
+                <hr class="my-4 border-gray-200">
+                
+                <!-- Back to Main Site -->
+                <a href="index.html" class="flex items-center space-x-3 px-4 py-3 text-gray-700 rounded-lg hover:bg-gray-50 hover:text-gray-900 transition-colors group">
+                    <i class="fas fa-globe w-5"></i>
+                    <span>View Website</span>
+                    <i class="fas fa-external-link-alt text-xs ml-auto"></i>
+                </a>
+            </nav>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main id="main-content" class="ml-64 pt-16 content-shift min-h-screen">
+        <div class="p-6">
+            <!-- Dashboard Header -->
+            <div class="mb-8 fade-in-up">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <h1 class="text-3xl font-bold text-gray-900 mb-2">Admin Dashboard 👑</h1>
+                        <p class="text-gray-600">Manage your Ceylon Safari business operations</p>
+                    </div>
+                    <div class="flex items-center space-x-3">
+                        <span class="text-sm text-gray-500">Last updated: </span>
+                        <span class="text-sm font-medium text-gray-900" id="current-time"></span>
+                        <button onclick="location.reload()" class="bg-amber-600 text-white px-4 py-2 rounded-lg hover:bg-amber-700 transition-colors">
+                            <i class="fas fa-sync-alt mr-2"></i>Refresh
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Key Metrics Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8 fade-in-up">
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200 card-hover">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm text-gray-600">Total Revenue</p>
+                            <p class="text-2xl font-bold text-gray-900">$47,250</p>
+                            <p class="text-xs text-green-600 mt-1">↑ 12.5% this month</p>
+                        </div>
+                        <div class="bg-green-100 p-3 rounded-lg">
+                            <i class="fas fa-dollar-sign text-green-600 text-xl"></i>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200 card-hover">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm text-gray-600">Total Bookings</p>
+                            <p class="text-2xl font-bold text-gray-900">142</p>
+                            <p class="text-xs text-blue-600 mt-1">8 pending approval</p>
+                        </div>
+                        <div class="bg-blue-100 p-3 rounded-lg">
+                            <i class="fas fa-calendar-check text-blue-600 text-xl"></i>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200 card-hover">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm text-gray-600">Active Customers</p>
+                            <p class="text-2xl font-bold text-gray-900">1,248</p>
+                            <p class="text-xs text-purple-600 mt-1">234 new this month</p>
+                        </div>
+                        <div class="bg-purple-100 p-3 rounded-lg">
+                            <i class="fas fa-users text-purple-600 text-xl"></i>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200 card-hover">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm text-gray-600">Avg. Rating</p>
+                            <p class="text-2xl font-bold text-gray-900">4.8/5</p>
+                            <p class="text-xs text-yellow-600 mt-1">From 892 reviews</p>
+                        </div>
+                        <div class="bg-yellow-100 p-3 rounded-lg">
+                            <i class="fas fa-star text-yellow-600 text-xl"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Actions & Alerts -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8 fade-in-up">
+                <!-- Quick Actions -->
+                <div class="lg:col-span-2">
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                        <h3 class="text-lg font-semibold text-gray-900 mb-4">Quick Actions</h3>
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                            <a href="admin-bookings.html" class="flex flex-col items-center p-4 bg-blue-50 rounded-lg hover:bg-blue-100 transition-colors">
+                                <i class="fas fa-calendar-plus text-2xl text-blue-600 mb-2"></i>
+                                <span class="text-sm font-medium text-blue-900">New Booking</span>
+                            </a>
+                            <a href="customers.html" class="flex flex-col items-center p-4 bg-green-50 rounded-lg hover:bg-green-100 transition-colors">
+                                <i class="fas fa-user-plus text-2xl text-green-600 mb-2"></i>
+                                <span class="text-sm font-medium text-green-900">Add Customer</span>
+                            </a>
+                            <a href="safari-packages.html" class="flex flex-col items-center p-4 bg-purple-50 rounded-lg hover:bg-purple-100 transition-colors">
+                                <i class="fas fa-map-marked-alt text-2xl text-purple-600 mb-2"></i>
+                                <span class="text-sm font-medium text-purple-900">New Package</span>
+                            </a>
+                            <a href="reports.html" class="flex flex-col items-center p-4 bg-amber-50 rounded-lg hover:bg-amber-100 transition-colors">
+                                <i class="fas fa-chart-bar text-2xl text-amber-600 mb-2"></i>
+                                <span class="text-sm font-medium text-amber-900">Generate Report</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- System Alerts -->
+                <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">System Alerts</h3>
+                    <div class="space-y-3">
+                        <div class="flex items-start space-x-3 p-3 bg-red-50 rounded-lg border-l-4 border-red-500">
+                            <i class="fas fa-exclamation-triangle text-red-500 mt-1"></i>
+                            <div>
+                                <p class="text-sm font-medium text-red-900">8 bookings need approval</p>
+                                <p class="text-xs text-red-700">Requires immediate attention</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start space-x-3 p-3 bg-yellow-50 rounded-lg border-l-4 border-yellow-500">
+                            <i class="fas fa-info-circle text-yellow-500 mt-1"></i>
+                            <div>
+                                <p class="text-sm font-medium text-yellow-900">Vehicle maintenance due</p>
+                                <p class="text-xs text-yellow-700">3 vehicles need service</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start space-x-3 p-3 bg-green-50 rounded-lg border-l-4 border-green-500">
+                            <i class="fas fa-check-circle text-green-500 mt-1"></i>
+                            <div>
+                                <p class="text-sm font-medium text-green-900">System backup completed</p>
+                                <p class="text-xs text-green-700">All data secured</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Activity & Revenue Chart -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 fade-in-up">
+                <!-- Recent Bookings -->
+                <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-lg font-semibold text-gray-900">Recent Bookings</h3>
+                        <a href="admin-bookings.html" class="text-sm text-amber-600 hover:text-amber-700">View All</a>
+                    </div>
+                    <div class="space-y-4">
+                        <div class="flex items-center space-x-4 p-4 bg-gray-50 rounded-lg">
+                            <div class="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center">
+                                <span class="text-white font-semibold text-sm">JD</span>
+                            </div>
+                            <div class="flex-1">
+                                <h4 class="font-medium text-gray-900">John Doe</h4>
+                                <p class="text-sm text-gray-600">Yala National Park - Half Day</p>
+                                <p class="text-xs text-blue-600">Booked 2 hours ago</p>
+                            </div>
+                            <div class="text-right">
+                                <p class="text-sm font-medium text-gray-900">$120</p>
+                                <span class="text-xs bg-green-100 text-green-800 px-2 py-1 rounded-full">Confirmed</span>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-center space-x-4 p-4 bg-gray-50 rounded-lg">
+                            <div class="w-10 h-10 bg-purple-600 rounded-full flex items-center justify-center">
+                                <span class="text-white font-semibold text-sm">SM</span>
+                            </div>
+                            <div class="flex-1">
+                                <h4 class="font-medium text-gray-900">Sarah Miller</h4>
+                                <p class="text-sm text-gray-600">Kumana Safari - 2 Days</p>
+                                <p class="text-xs text-purple-600">Booked 4 hours ago</p>
+                            </div>
+                            <div class="text-right">
+                                <p class="text-sm font-medium text-gray-900">$160</p>
+                                <span class="text-xs bg-yellow-100 text-yellow-800 px-2 py-1 rounded-full">Pending</span>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center space-x-4 p-4 bg-gray-50 rounded-lg">
+                            <div class="w-10 h-10 bg-green-600 rounded-full flex items-center justify-center">
+                                <span class="text-white font-semibold text-sm">MJ</span>
+                            </div>
+                            <div class="flex-1">
+                                <h4 class="font-medium text-gray-900">Mike Johnson</h4>
+                                <p class="text-sm text-gray-600">Yala Full Day Safari</p>
+                                <p class="text-xs text-green-600">Booked 6 hours ago</p>
+                            </div>
+                            <div class="text-right">
+                                <p class="text-sm font-medium text-gray-900">$95</p>
+                                <span class="text-xs bg-green-100 text-green-800 px-2 py-1 rounded-full">Paid</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Revenue Overview -->
+                <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-lg font-semibold text-gray-900">Revenue Overview</h3>
+                        <select class="text-sm border border-gray-300 rounded-lg px-3 py-1">
+                            <option>Last 7 days</option>
+                            <option>Last 30 days</option>
+                            <option>Last 3 months</option>
+                        </select>
+                    </div>
+                    <div class="chart-container">
+                        <!-- Simple visual representation of a chart -->
+                        <div class="h-full flex items-end space-x-2">
+                            <div class="bg-amber-200 w-8 h-16 rounded-t"></div>
+                            <div class="bg-amber-300 w-8 h-24 rounded-t"></div>
+                            <div class="bg-amber-400 w-8 h-32 rounded-t"></div>
+                            <div class="bg-
