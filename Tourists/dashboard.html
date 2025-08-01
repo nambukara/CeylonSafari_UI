@@ -542,7 +542,8 @@
 
             const selectedPackage = packages[safariPackage.value];
             const passengerTotal = passengers * selectedPackage.price;
-            const total = passengerTotal;
+            const adultTotal = adults * selectedPackage.price;
+            const total = adultTotal;
 
             const summaryHTML = `
                 <div class="flex justify-between items-center">
@@ -554,8 +555,8 @@
                     <span class="font-semibold">${date || 'Not selected'}</span>
                 </div>
                 <div class="flex justify-between items-center">
-                    <span class="text-gray-600">Passengers (${passengers}):</span>
-                    <span class="font-semibold">${passengerTotal}</span>
+                    <span class="text-gray-600">Adults (${adults}):</span>
+                    <span class="font-semibold">${adultTotal}</span>
                 </div>
                 <hr class="my-2">
                 <div class="flex justify-between items-center text-lg font-bold text-green-600">
