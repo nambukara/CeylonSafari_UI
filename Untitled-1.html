@@ -1,490 +1,74 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>New Booking - Ceylon Safari</title>
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Fonts - Inter -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <!-- Font Awesome for icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <style>
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #f8fafc;
-            position: relative;
-            overflow-x: hidden;
-        }
-        .sidebar-transition {
-            transition: transform 0.3s ease-in-out;
-        }
-        .content-shift {
-            transition: margin-left 0.3s ease-in-out;
-        }
-        .notification-dot {
-            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-        }
-        .active-nav {
-            background-color: #f0fdf4;
-            color: #15803d;
-            border-right: 3px solid #16a34a;
-        }
-        .form-step {
-            display: none;
-        }
-        .form-step.active {
-            display: block;
-        }
-        .step-indicator {
-            background-color: #e5e7eb;
-            color: #6b7280;
-        }
-        .step-indicator.active {
-            background-color: #16a34a;
-            color: white;
-        }
-        .step-indicator.completed {
-            background-color: #16a34a;
-            color: white;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Safari Animation</title>
+  <style>
+    body, html {
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+    }
 
-        /* Background Animation Styles */
-        .background-animation {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 1;
-            overflow: hidden;
-        }
+    .background {
+      position: absolute;
+      width: 100%;
+      height: 100vh;
+      background: linear-gradient(to top, #049f28, #ffffff); /* desert to sky */
+      overflow: hidden;
+    }
 
-        .animal {
-            position: absolute;
-            opacity: 0.1;
-            animation-timing-function: linear;
-            animation-iteration-count: infinite;
-        }
+    .tree {
+      position: absolute;
+      bottom: 0;
+      width: 120px;
+      height: auto;
+      animation: sway 5s ease-in-out infinite alternate;
+    }
 
-        .bird1 {
-            animation: flyBird1 25s linear infinite;
-            animation-delay: 0s;
-        }
+    .tree:nth-child(1) { left: 5%; animation-delay: 0s; }
+    .tree:nth-child(2) { left: 35%; animation-delay: 1s; }
+    .tree:nth-child(3) { left: 65%; animation-delay: 2s; }
 
-        .bird2 {
-            animation: flyBird2 30s linear infinite;
-            animation-delay: 8s;
-        }
+    @keyframes sway {
+      0% { transform: rotate(-1deg); }
+      100% { transform: rotate(1deg); }
+    }
 
-        .bird3 {
-            animation: flyBird3 20s linear infinite;
-            animation-delay: 15s;
-        }
+    .animal {
+      position: absolute;
+      bottom: 0;
+      width: 100px;
+      height: auto;
+      animation: move 20s linear infinite;
+    }
 
-        .elephant1 {
-            animation: walkElephant1 40s linear infinite;
-            animation-delay: 5s;
-        }
+    .elephant {
+      animation-delay: 0s;
+    }
 
-        .elephant2 {
-            animation: walkElephant2 45s linear infinite;
-            animation-delay: 25s;
-        }
+    .deer {
+      width: 80px;
+      animation-delay: 10s;
+    }
 
-        .deer {
-            animation: runDeer 35s linear infinite;
-            animation-delay: 12s;
-        }
-
-        .butterfly1 {
-            animation: flyButterfly1 18s ease-in-out infinite;
-            animation-delay: 3s;
-        }
-
-        .butterfly2 {
-            animation: flyButterfly2 22s ease-in-out infinite;
-            animation-delay: 16s;
-        }
-
-        /* Bird animations */
-        @keyframes flyBird1 {
-            0% { transform: translateX(-100px) translateY(10vh); }
-            100% { transform: translateX(100vw) translateY(15vh); }
-        }
-
-        @keyframes flyBird2 {
-            0% { transform: translateX(100vw) translateY(25vh); }
-            100% { transform: translateX(-100px) translateY(20vh); }
-        }
-
-        @keyframes flyBird3 {
-            0% { transform: translateX(-100px) translateY(8vh); }
-            100% { transform: translateX(100vw) translateY(12vh); }
-        }
-
-        /* Elephant animations */
-        @keyframes walkElephant1 {
-            0% { transform: translateX(-200px) translateY(70vh) scaleX(1); }
-            100% { transform: translateX(100vw) translateY(75vh) scaleX(1); }
-        }
-
-        @keyframes walkElephant2 {
-            0% { transform: translateX(100vw) translateY(65vh) scaleX(-1); }
-            100% { transform: translateX(-200px) translateY(70vh) scaleX(-1); }
-        }
-
-        /* Deer animation */
-        @keyframes runDeer {
-            0% { transform: translateX(-150px) translateY(60vh); }
-            100% { transform: translateX(100vw) translateY(55vh); }
-        }
-
-        /* Butterfly animations */
-        @keyframes flyButterfly1 {
-            0% { transform: translateX(10vw) translateY(30vh) rotate(0deg); }
-            25% { transform: translateX(20vw) translateY(25vh) rotate(10deg); }
-            50% { transform: translateX(30vw) translateY(35vh) rotate(-5deg); }
-            75% { transform: translateX(40vw) translateY(28vh) rotate(8deg); }
-            100% { transform: translateX(50vw) translateY(32vh) rotate(0deg); }
-        }
-
-        @keyframes flyButterfly2 {
-            0% { transform: translateX(60vw) translateY(45vh) rotate(0deg); }
-            25% { transform: translateX(50vw) translateY(40vh) rotate(-8deg); }
-            50% { transform: translateX(40vw) translateY(50vh) rotate(5deg); }
-            75% { transform: translateX(30vw) translateY(43vh) rotate(-10deg); }
-            100% { transform: translateX(20vw) translateY(47vh) rotate(0deg); }
-        }
-
-        /* Make sure content is above animations */
-        nav, aside, main {
-            position: relative;
-            z-index: 10;
-        }
-    </style>
+    @keyframes move {
+      0% { left: -150px; }
+      100% { left: 110%; }
+    }
+  </style>
 </head>
-<body class="bg-gray-50">
-    <!-- Background Animation Container -->
-    <div class="background-animation">
-        <!-- Birds -->
-        <div class="animal bird1">
-            <svg width="40" height="25" viewBox="0 0 40 25" fill="none">
-                <path d="M5 12 Q15 8 25 12 Q30 10 35 12" stroke="#16a34a" stroke-width="2" fill="none"/>
-                <path d="M8 15 Q18 11 28 15" stroke="#16a34a" stroke-width="1.5" fill="none"/>
-                <circle cx="6" cy="12" r="2" fill="#16a34a"/>
-            </svg>
-        </div>
-        <div class="animal bird2">
-            <svg width="35" height="20" viewBox="0 0 35 20" fill="none">
-                <path d="M3 10 Q12 7 22 10 Q27 8 32 10" stroke="#059669" stroke-width="2" fill="none"/>
-                <path d="M6 12 Q15 9 25 12" stroke="#059669" stroke-width="1.5" fill="none"/>
-                <circle cx="4" cy="10" r="1.5" fill="#059669"/>
-            </svg>
-        </div>
-        <div class="animal bird3">
-            <svg width="30" height="18" viewBox="0 0 30 18" fill="none">
-                <path d="M2 9 Q10 6 18 9 Q22 7 28 9" stroke="#22c55e" stroke-width="1.5" fill="none"/>
-                <path d="M4 11 Q12 8 20 11" stroke="#22c55e" stroke-width="1" fill="none"/>
-                <circle cx="3" cy="9" r="1" fill="#22c55e"/>
-            </svg>
-        </div>
+<body>
+  <div class="background">
+    <!-- Trees -->
+    <img class="tree" src="https://upload.wikimedia.org/wikipedia/commons/8/84/Acacia_tree_silhouette.svg" alt="tree">
+    <img class="tree" src="https://www.shutterstock.com/image-photo/tree-isolated-on-white-background-use-1713709237" alt="tree">
+    <img class="tree" src="https://upload.wikimedia.org/wikipedia/commons/8/84/Acacia_tree_silhouette.svg" alt="tree">
 
-        <!-- Elephants -->
-        <div class="animal elephant1">
-            <svg width="120" height="80" viewBox="0 0 120 80" fill="none">
-                <ellipse cx="60" cy="65" rx="45" ry="12" fill="#6b7280" opacity="0.3"/>
-                <path d="M20 45 Q30 35 45 40 Q55 45 65 40 Q75 35 85 40 Q95 45 100 50 L100 65 Q95 70 85 68 Q75 65 65 68 Q55 70 45 68 Q35 65 25 68 Q15 70 10 65 Z" fill="#374151"/>
-                <circle cx="25" cy="50" r="3" fill="#1f2937"/>
-                <path d="M15 50 Q5 45 8 52 Q12 58 18 55" stroke="#374151" stroke-width="3" fill="none"/>
-                <rect x="22" y="65" width="4" height="12" fill="#374151"/>
-                <rect x="40" y="65" width="4" height="12" fill="#374151"/>
-                <rect x="65" y="65" width="4" height="12" fill="#374151"/>
-                <rect x="83" y="65" width="4" height="12" fill="#374151"/>
-            </svg>
-        </div>
-        <div class="animal elephant2">
-            <svg width="100" height="70" viewBox="0 0 100 70" fill="none">
-                <ellipse cx="50" cy="58" rx="38" ry="10" fill="#6b7280" opacity="0.3"/>
-                <path d="M15 38 Q23 30 35 35 Q43 38 50 35 Q57 30 65 35 Q73 38 78 42 L78 55 Q73 58 65 57 Q57 55 50 57 Q43 58 35 57 Q27 55 20 57 Q13 58 8 55 Z" fill="#4b5563"/>
-                <circle cx="20" cy="42" r="2.5" fill="#1f2937"/>
-                <path d="M12 42 Q4 38 6 44 Q9 48 14 46" stroke="#4b5563" stroke-width="2.5" fill="none"/>
-                <rect x="18" y="55" width="3" height="10" fill="#4b5563"/>
-                <rect x="32" y="55" width="3" height="10" fill="#4b5563"/>
-                <rect x="52" y="55" width="3" height="10" fill="#4b5563"/>
-                <rect x="66" y="55" width="3" height="10" fill="#4b5563"/>
-            </svg>
-        </div>
-
-        <!-- Deer -->
-        <div class="animal deer">
-            <svg width="80" height="60" viewBox="0 0 80 60" fill="none">
-                <ellipse cx="40" cy="52" rx="25" ry="6" fill="#6b7280" opacity="0.3"/>
-                <path d="M25 35 Q35 30 45 35 Q55 40 60 35 L60 45 Q55 50 45 48 Q35 45 25 48 Z" fill="#8b5cf6"/>
-                <circle cx="30" cy="38" r="2" fill="#1f2937"/>
-                <path d="M28 32 L30 28 M32 30 L35 26" stroke="#8b5cf6" stroke-width="2"/>
-                <rect x="27" y="48" width="2" height="8" fill="#8b5cf6"/>
-                <rect x="35" y="48" width="2" height="8" fill="#8b5cf6"/>
-                <rect x="48" y="48" width="2" height="8" fill="#8b5cf6"/>
-                <rect x="56" y="48" width="2" height="8" fill="#8b5cf6"/>
-                <path d="M60 35 Q65 30 68 35" stroke="#8b5cf6" stroke-width="2" fill="none"/>
-            </svg>
-        </div>
-
-        <!-- Butterflies -->
-        <div class="animal butterfly1">
-            <svg width="25" height="20" viewBox="0 0 25 20" fill="none">
-                <ellipse cx="6" cy="8" rx="5" ry="6" fill="#f59e0b" opacity="0.8"/>
-                <ellipse cx="19" cy="8" rx="5" ry="6" fill="#f59e0b" opacity="0.8"/>
-                <ellipse cx="6" cy="14" rx="4" ry="4" fill="#f97316" opacity="0.8"/>
-                <ellipse cx="19" cy="14" rx="4" ry="4" fill="#f97316" opacity="0.8"/>
-                <line x1="12.5" y1="4" x2="12.5" y2="16" stroke="#1f2937" stroke-width="1"/>
-                <circle cx="12.5" cy="4" r="1" fill="#1f2937"/>
-            </svg>
-        </div>
-        <div class="animal butterfly2">
-            <svg width="20" height="16" viewBox="0 0 20 16" fill="none">
-                <ellipse cx="5" cy="6" rx="4" ry="5" fill="#ec4899" opacity="0.8"/>
-                <ellipse cx="15" cy="6" rx="4" ry="5" fill="#ec4899" opacity="0.8"/>
-                <ellipse cx="5" cy="11" rx="3" ry="3" fill="#be185d" opacity="0.8"/>
-                <ellipse cx="15" cy="11" rx="3" ry="3" fill="#be185d" opacity="0.8"/>
-                <line x1="10" y1="3" x2="10" y2="13" stroke="#1f2937" stroke-width="0.8"/>
-                <circle cx="10" cy="3" r="0.8" fill="#1f2937"/>
-            </svg>
-        </div>
-    </div>
-
-    <!-- Top Navigation Bar -->
-    <nav class="bg-white shadow-lg fixed w-full top-0 z-50 border-b border-gray-200">
-        <div class="px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between items-center h-16">
-                <!-- Left side -->
-                <div class="flex items-center space-x-4">
-                    <!-- Sidebar toggle button -->
-                    <button id="sidebar-toggle" class="text-gray-600 hover:text-green-600 p-2 rounded-lg hover:bg-gray-100 transition-colors">
-                        <i class="fas fa-bars text-lg"></i>
-                    </button>
-                    
-                    <!-- Logo -->
-                    <div class="flex items-center space-x-3">
-                        <div class="w-8 h-8 bg-green-600 rounded-lg flex items-center justify-center">
-                            <i class="fas fa-paw text-white"></i>
-                        </div>
-                        <span class="font-bold text-xl text-gray-900">Ceylon Safari</span>
-                    </div>
-                </div>
-
-                <!-- Right side -->
-                <div class="flex items-center space-x-4">
-                    <!-- Search -->
-                    <div class="hidden md:block">
-                        <div class="relative">
-                            <input type="text" placeholder="Search..." class="bg-gray-100 border-0 rounded-lg py-2 pl-10 pr-4 text-sm focus:ring-2 focus:ring-green-500 focus:bg-white transition-all">
-                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center">
-                                <i class="fas fa-search text-gray-400"></i>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Notifications -->
-                    <div class="relative">
-                        <button class="p-2 text-gray-600 hover:text-green-600 hover:bg-gray-100 rounded-lg transition-colors relative">
-                            <i class="fas fa-bell text-lg"></i>
-                            <span class="absolute -top-1 -right-1 h-3 w-3 bg-red-500 rounded-full notification-dot"></span>
-                        </button>
-                    </div>
-
-                    <!-- User Profile Dropdown -->
-                    <div class="relative">
-                        <button id="profile-dropdown" class="flex items-center space-x-2 p-2 rounded-lg hover:bg-gray-100 transition-colors">
-                            <img src="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='50' fill='%2316a34a'/><circle cx='50' cy='35' r='15' fill='white'/><path d='M25 75 Q25 60 50 60 Q75 60 75 75' fill='white'/></svg>" alt="Profile" class="w-8 h-8 rounded-full">
-                            <span class="hidden md:block text-sm font-medium text-gray-700">John Doe</span>
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </nav>
-
-    <!-- Sidebar -->
-    <aside id="sidebar" class="fixed left-0 top-16 w-64 h-full bg-white shadow-lg border-r border-gray-200 sidebar-transition z-40">
-        <div class="p-6">
-            <!-- User Info -->
-            <div class="flex items-center space-x-3 mb-8 p-4 bg-gradient-to-r from-green-50 to-green-100 rounded-xl">
-                <img src="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='50' fill='%2316a34a'/><circle cx='50' cy='35' r='15' fill='white'/><path d='M25 75 Q25 60 50 60 Q75 60 75 75' fill='white'/></svg>" alt="Profile" class="w-12 h-12 rounded-full">
-                <div>
-                    <h3 class="font-semibold text-gray-900">John Doe</h3>
-                </div>
-            </div>
-
-            <!-- Navigation Menu -->
-            <nav class="space-y-2">
-                <a href="dashboard.html" class="flex items-center space-x-3 px-4 py-3 text-gray-700 rounded-lg hover:bg-green-50 hover:text-green-700 transition-colors group active-nav">
-                    <i class="fas fa-tachometer-alt w-5"></i>
-                    <span>Dashboard</span>
-                </a>
-                
-                <a href="bookings.html" class="flex items-center space-x-3 px-4 py-3 text-gray-700 rounded-lg hover:bg-green-50 hover:text-green-700 transition-colors group ">
-                    <i class="fas fa-calendar-check w-5"></i>
-                    <span>My Bookings</span>
-                    
-                </a>
-                
-                <a href="profile.html" class="flex items-center space-x-3 px-4 py-3 text-gray-700 rounded-lg hover:bg-green-50 hover:text-green-700 transition-colors group">
-                    <i class="fas fa-user-circle w-5"></i>
-                    <span>Profile</span>
-                </a>
-                
-                <a href="payments.html" class="flex items-center space-x-3 px-4 py-3 text-gray-700 rounded-lg hover:bg-green-50 hover:text-green-700 transition-colors group">
-                    <i class="fas fa-credit-card w-5"></i>
-                    <span>Payments</span>
-                </a>
-                
-                <a href="support.html" class="flex items-center space-x-3 px-4 py-3 text-gray-700 rounded-lg hover:bg-green-50 hover:text-green-700 transition-colors group">
-                    <i class="fas fa-headset w-5"></i>
-                    <span>Support</span>
-                </a>
-
-                <!-- Divider -->
-                <hr class="my-4 border-gray-200">
-                
-                <!-- Back to Main Site -->
-                <a href="index.html" class="flex items-center space-x-3 px-4 py-3 text-gray-700 rounded-lg hover:bg-gray-50 hover:text-gray-900 transition-colors group">
-                    <i class="fas fa-globe w-5"></i>
-                    <span>Back to Website</span>
-                    <i class="fas fa-external-link-alt text-xs ml-auto"></i>
-                </a>
-                
-                <a href="index.html" class="flex items-center space-x-3 px-4 py-3 text-gray-700 rounded-lg hover:bg-red-50 hover:text-red-700 transition-colors group">
-                    <i class="fas fa-sign-out-alt w-5"></i>
-                    <span>Logout</span>
-                </a>
-            </nav>
-        </div>
-    </aside>
-
-    <!-- Main Content -->
-    <main id="main-content" class="ml-64 pt-16 content-shift min-h-screen">
-        <div class="p-6">
-            <!-- Header -->
-            <div class="mb-8">
-                <div class="flex items-center justify-between">
-                    <div>
-                        <h1 class="text-3xl font-bold text-gray-900 mb-2">New Safari Booking</h1>
-                        <p class="text-gray-600">Book your unforgettable Sri Lankan safari adventure</p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Progress Steps -->
-            <div class="mb-8">
-                <div class="flex items-center justify-center space-x-4">
-                    <div class="flex items-center">
-                        <div class="step-indicator active w-10 h-10 rounded-full flex items-center justify-center text-sm font-semibold">1</div>
-                        <span class="ml-2 text-sm font-medium text-gray-900">Safari Details</span>
-                    </div>                   
-                    <div class="w-16 h-1 bg-gray-200 rounded"></div>
-                    <div class="flex items-center">
-                        <div class="step-indicator w-10 h-10 rounded-full flex items-center justify-center text-sm font-semibold">2</div>
-                        <span class="ml-2 text-sm font-medium text-gray-500">Payment</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Booking Form -->
-            <div class="max-w-4xl mx-auto">
-                <form id="booking-form" class="space-y-6">
-                    
-                    <!-- Step 1: Safari Details -->
-                    <div id="step-1" class="form-step active">
-                        <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-8">
-                            <h2 class="text-2xl font-semibold text-gray-900 mb-6">Safari Details</h2>
-                            
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                <!-- Safari Package -->
-                                <div class="md:col-span-2">
-                                    <label class="block text-sm font-medium text-gray-700 mb-3">Select Safari Package</label>
-                                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                                        <div class="relative">
-                                            <input type="radio" id="yala" name="safari-package" value="yala" class="peer sr-only">
-                                            <label for="yala" class="block p-4 border-2 border-gray-200 rounded-lg cursor-pointer hover:border-green-300 peer-checked:border-green-500 peer-checked:bg-green-50 transition-all">
-                                                <div class="text-center">
-                                                    <i class="fas fa-tree text-2xl text-green-600 mb-2"></i>
-                                                    <h3 class="font-semibold text-gray-900">Yala National Park</h3>
-                                                    <p class="text-sm text-gray-600 mt-1">Full Day Safari (6:00 AM - 6:00 PM)</p>
-                                                    <p class="text-lg font-bold text-green-600 mt-2">$120/person</p>
-                                                </div>
-                                            </label>
-                                        </div>
-                                        <div class="relative">
-                                            <input type="radio" id="udawalawe" name="safari-package" value="udawalawe" class="peer sr-only">
-                                            <label for="udawalawe" class="block p-4 border-2 border-gray-200 rounded-lg cursor-pointer hover:border-green-300 peer-checked:border-green-500 peer-checked:bg-green-50 transition-all">
-                                                <div class="text-center">
-                                                    <i class="fas fa-mountain text-2xl text-green-600 mb-2"></i>
-                                                    <h3 class="font-semibold text-gray-900">Yala National Park</h3>
-                                                    <p class="text-sm text-gray-600 mt-1">Morning Safari (6:00 AM - 10:00 AM)</p>
-                                                    <p class="text-lg font-bold text-green-600 mt-2">$95/person</p>
-                                                </div>
-                                            </label>
-                                        </div>
-                                        <div class="relative">
-                                            <input type="radio" id="wilpattu" name="safari-package" value="wilpattu" class="peer sr-only">
-                                            <label for="wilpattu" class="block p-4 border-2 border-gray-200 rounded-lg cursor-pointer hover:border-green-300 peer-checked:border-green-500 peer-checked:bg-green-50 transition-all">
-                                                <div class="text-center">
-                                                    <i class="fas fa-leaf text-2xl text-green-600 mb-2"></i>
-                                                    <h3 class="font-semibold text-gray-900">Yala National Park</h3>
-                                                    <p class="text-sm text-gray-600 mt-1">Afternoon Safari (2:00 PM - 6:00 PM)</p>
-                                                    <p class="text-lg font-bold text-green-600 mt-2">$110/person</p>
-                                                </div>
-                                            </label>
-                                        </div>
-                                        <div class="relative">
-                                            <input type="radio" id="kumana" name="safari-package" value="kumana" class="peer sr-only">
-                                            <label for="kumana" class="block p-4 border-2 border-gray-200 rounded-lg cursor-pointer hover:border-green-300 peer-checked:border-green-500 peer-checked:bg-green-50 transition-all">
-                                                <div class="text-center">
-                                                    <i class="fas fa-feather text-2xl text-green-600 mb-2"></i>
-                                                    <h3 class="font-semibold text-gray-900">Kumana National Park</h3>
-                                                    <p class="text-sm text-gray-600 mt-1">Full Day Safari (6:00 AM - 6:00 PM)</p>
-                                                    <p class="text-lg font-bold text-green-600 mt-2">$85/person</p>
-                                                </div>
-                                            </label>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- Date -->
-                                <div>
-                                    <label for="safari-date" class="block text-sm font-medium text-gray-700 mb-2">Preferred Date</label>
-                                    <input type="date" id="safari-date" name="safari-date" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors">
-                                </div>
-
-                                <!-- Number of Passengers -->
-                                <div>
-                                    <label for="passengers" class="block text-sm font-medium text-gray-700 mb-2">Number of Passengers</label>
-                                    <select id="passengers" name="passengers" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors">
-                                        <option value="">Select number of passengers</option>
-                                        <option value="1">1</option>
-                                        <option value="2">2</option>
-                                        <option value="3">3</option>
-                                        <option value="4">4</option>
-                                        <option value="5">5</option>
-                                        <option value="6">6</option>
-                                    </select>
-                                </div>
-                                <!-- Driver Dropdown -->
-                                <div>
-                                    <label for="driver" class="block text-sm font-medium text-gray-700 mb-2">Driver</label>
-                                    <select id="driver" name="driver" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors">
-                                        <option value="">Select Driver</option>
-                                        <option value="driver1">Driver 1</option>
-                                        <option value="driver2">Driver 2</option>
-                                        <option value="driver3">Driver 3</option>
-                                    </select>
-                                </div>
-                                <!-- Guide Dropdown (Optional) -->
-                                <div>
-                                    <label for="guide" class="
+    <!-- Animals -->
+    <img class="animal elephant" src="https://upload.wikimedia.org/wikipedia/commons/f/fb/Elephant_silhouette.svg" alt="elephant">
+    <img class="animal deer" src="https://upload.wikimedia.org/wikipedia/commons/0/02/Deer_silhouette.svg" alt="deer">
+  </div>
+</body>
+</html>

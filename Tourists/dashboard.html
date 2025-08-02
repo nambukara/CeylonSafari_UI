@@ -528,7 +528,7 @@
         // Update booking summary
         function updateBookingSummary() {
             const safariPackage = document.querySelector('input[name="safari-package"]:checked');
-            const adults = parseInt(document.getElementById('adults').value) || 0;
+            const passengers = parseInt(document.getElementById('passengers').value) || 0;
             const date = document.getElementById('safari-date').value;
 
             if (!safariPackage) return;
@@ -541,8 +541,8 @@
             };
 
             const selectedPackage = packages[safariPackage.value];
-            const adultTotal = adults * selectedPackage.price;
-            const total = adultTotal;
+            const passengerTotal = passengers * selectedPackage.price;
+            const total = passengerTotal;
 
             const summaryHTML = `
                 <div class="flex justify-between items-center">
@@ -554,8 +554,8 @@
                     <span class="font-semibold">${date || 'Not selected'}</span>
                 </div>
                 <div class="flex justify-between items-center">
-                    <span class="text-gray-600">Adults (${adults}):</span>
-                    <span class="font-semibold">${adultTotal}</span>
+                    <span class="text-gray-600">Passengers (${passengers}):</span>
+                    <span class="font-semibold">${passengerTotal}</span>
                 </div>
                 <hr class="my-2">
                 <div class="flex justify-between items-center text-lg font-bold text-green-600">
