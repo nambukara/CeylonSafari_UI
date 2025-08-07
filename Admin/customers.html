@@ -241,79 +241,66 @@
 
     <!-- Main Content -->
     <main id="main-content" class="ml-64 pt-16 content-shift min-h-screen">
-        <div class="p-6">
-            <!-- Dashboard Header -->
-            <div class="mb-8 fade-in-up">
-                <div class="flex items-center justify-between">
-                    <div>
-                        <h1 class="text-3xl font-bold text-gray-900 mb-2">Admin Dashboard 👑</h1>
-                        <p class="text-gray-600">Manage your Ceylon Safari business operations</p>
-                    </div>
-                    <div class="flex items-center space-x-3">
-                        <span class="text-sm text-gray-500">Last updated: </span>
-                        <span class="text-sm font-medium text-gray-900" id="current-time"></span>
-                        <button onclick="location.reload()" class="bg-amber-600 text-white px-4 py-2 rounded-lg hover:bg-amber-700 transition-colors">
-                            <i class="fas fa-sync-alt mr-2"></i>Refresh
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Key Metrics Cards -->
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8 fade-in-up">
-                <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200 card-hover">
-                    <div class="flex items-center justify-between">
-                        <div>
-                            <p class="text-sm text-gray-600">Total Revenue</p>
-                            <p class="text-2xl font-bold text-gray-900">$47,250</p>
-                            <p class="text-xs text-green-600 mt-1">↑ 12.5% this month</p>
-                        </div>
-                        <div class="bg-green-100 p-3 rounded-lg">
-                            <i class="fas fa-dollar-sign text-green-600 text-xl"></i>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200 card-hover">
-                    <div class="flex items-center justify-between">
-                        <div>
-                            <p class="text-sm text-gray-600">Total Bookings</p>
-                            <p class="text-2xl font-bold text-gray-900">142</p>
-                            <p class="text-xs text-blue-600 mt-1">8 pending approval</p>
-                        </div>
-                        <div class="bg-blue-100 p-3 rounded-lg">
-                            <i class="fas fa-calendar-check text-blue-600 text-xl"></i>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200 card-hover">
-                    <div class="flex items-center justify-between">
-                        <div>
-                            <p class="text-sm text-gray-600">Registered  Customers</p>
-                            <p class="text-2xl font-bold text-gray-900">1,248</p>
-                            <p class="text-xs text-purple-600 mt-1">234 new this month</p>
-                        </div>
-                        <div class="bg-purple-100 p-3 rounded-lg">
-                            <i class="fas fa-users text-purple-600 text-xl"></i>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200 card-hover">
-                    <div class="flex items-center justify-between">
-                        <div>
-                            <p class="text-sm text-gray-600">Registered Drivers</p>
-                            <p class="text-2xl font-bold text-gray-900">412</p>
-                            <p class="text-xs text-yellow-600 mt-1">892 </p>
-                        </div>
-                        <div class="bg-yellow-100 p-3 rounded-lg">
-                            <i class="fa-solid fa-truck-monster"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <!--customers details-->
+        <section class="p-8 fade-in-up">
+          <h2 class="text-2xl font-bold mb-6 text-gray-800">All Customers</h2>
+          <div class="overflow-x-auto bg-white rounded-xl shadow card-hover">
+            <table class="min-w-full divide-y divide-gray-200">
+              <thead class="bg-amber-50">
+                <tr>
+                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Customer ID</th>
+                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
+                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
+                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Phone</th>
+                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Joined Date</th>
+                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                </tr>
+              </thead>
+              <tbody class="bg-white divide-y divide-gray-200">
+                <tr>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">#C001</td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">John Doe</td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">john@example.com</td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">+94 77 123 4567</td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">2025-07-15</td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm">
+                    <span class="inline-block px-2 py-1 rounded-full bg-green-100 text-green-700 text-xs">Active</span>
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm">
+                    <button class="text-blue-600 hover:text-blue-800"><i class="fas fa-edit"></i> Edit</button>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">#C002</td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">Jane Smith</td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">jane@example.com</td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">+94 76 987 6543</td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">2025-07-20</td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm">
+                    <span class="inline-block px-2 py-1 rounded-full bg-yellow-100 text-yellow-700 text-xs">Pending</span>
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm">
+                    <button class="text-blue-600 hover:text-blue-800"><i class="fas fa-edit"></i> Edit</button>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">#C003</td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">Sam Lee</td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">sam@example.com</td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">+94 71 555 1234</td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">2025-07-25</td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm">
+                    <span class="inline-block px-2 py-1 rounded-full bg-red-100 text-red-700 text-xs">Inactive</span>
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm">
+                    <button class="text-blue-600 hover:text-blue-800"><i class="fas fa-edit"></i> Edit</button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
     </main>
     <script>
         // Sidebar toggle logic
