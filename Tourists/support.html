@@ -128,13 +128,12 @@
                     
                 </a>
                 
-                <a href="profile.html" class="flex items-center space-x-3 px-4 py-3 text-gray-700 rounded-lg hover:bg-green-50 hover:text-green-700 transition-colors group  active-nav ">
+                <a href="profile.html" class="flex items-center space-x-3 px-4 py-3 text-gray-700 rounded-lg hover:bg-green-50 hover:text-green-700 transition-colors group ">
                     <i class="fas fa-user-circle w-5"></i>
                     <span>Profile</span>
                 </a>
                 
-                
-                <a href="support.html" class="flex items-center space-x-3 px-4 py-3 text-gray-700 rounded-lg hover:bg-green-50 hover:text-green-700 transition-colors group">
+                <a href="support.html" class="flex items-center space-x-3 px-4 py-3 text-gray-700 rounded-lg hover:bg-green-50 hover:text-green-700 transition-colors group active-nav ">
                     <i class="fas fa-headset w-5"></i>
                     <span>Support</span>
                 </a>
@@ -160,9 +159,36 @@
     <!-- Main Content -->
     <main id="main-content" class="ml-64 pt-16 content-shift min-h-screen">
         
+    <main>
+        <!-- Support Content Section -->
+        <section class="max-w-2xl mx-auto p-8 bg-white rounded-xl shadow mt-10">
+            <h2 class="text-2xl font-bold mb-4 text-gray-800">Support & Help Center</h2>
+            <p class="mb-6 text-gray-600">Need help with your safari experience, bookings, or account? Our support team is here to assist you. Browse FAQs or contact us directly below.</p>
+            <div class="mb-6">
+                <h3 class="text-lg font-semibold mb-2 text-amber-700">Frequently Asked Questions</h3>
+                <ul class="list-disc pl-6 text-gray-700 space-y-2">
+                    <li>How do I change my booking date?</li>
+                    <li>How do I update my profile information?</li>
+                    <li>What should I bring for my safari?</li>
+                    <li>How do I contact my guide?</li>
+                </ul>
+            </div>
+            <div>
+                <h3 class="text-lg font-semibold mb-2 text-amber-700">Contact Support</h3>
+                <form class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Your Email</label>
+                        <input type="email" class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-amber-500" placeholder="Enter your email">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Message</label>
+                        <textarea class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-amber-500" rows="4" placeholder="Describe your issue or question"></textarea>
+                    </div>
+                    <button type="submit" class="bg-amber-500 hover:bg-amber-600 text-white font-semibold px-6 py-2 rounded-lg transition-colors">Send Message</button>
+                </form>
+            </div>
+        </section>
     </main>
-
-
     <script>
         // Sidebar toggle functionality
         const sidebarToggle = document.getElementById('sidebar-toggle');
